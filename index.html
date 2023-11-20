@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Editable Content Example</title>
+</head>
+<body>
+
+    <div>
+        <label for="editableInput">Editable Content:</label>
+        <input type="text" id="editableInput" placeholder="Type here...">
+        <button onclick="updateAndSaveContent(); sharePage()">Update and Save</button>
+    </div>
+
+    <div>
+        <label for="outputContent">Output:</label>
+        <output id="outputContent">home</output>
+    </div>
+<div id="timer">00d 00h 00m 00s</div>
+
+
+<script>
+function sharePage() {
+  // Get the current page URL
+  var currentPageUrl = window.location.href;
+
+  // Check if the browser supports the Web Share API
+  if (navigator.share) {
+    navigator.share({
+      title: document.title,
+      url: currentPageUrl
+    })
+    .then(() => console.log('Shared successfully'))
+    .catch((error) => console.error('Error sharing:', error));
+  } else {
+    // Fallback for browsers that do not support the Web Share API
+    alert('Copy the URL below to share:\n\n' + currentPageUrl);
+  }
+}
+
+
+
+   
+    
+    // Load previously saved content on page load
+    window.onload = function () {
+    loadSavedContent();
+    };
+    
+    function updateAndSaveContent() {
+    // Get the input value
+    var inputValue = document.getElementById('editableInput').value;
+    
+    // Display the input value in the output element
+    document.getElementById('outputContent').textContent = inputValue;
+    
+    // Save the content to local storage
+    saveContent(inputValue);
+    }
+    
+    function saveContent(content) {
+    // Save the content to local storage
+    localStorage.setItem('savedContent', content);
+    }
+    
+    function loadSavedContent() {
+    // Load the saved content from local storage
+    var savedContent = localStorage.getItem('savedContent');
+    
+    // Display the saved content in the input and output elements
+    if (savedContent) {
+    document.getElementById('editableInput').value = savedContent;
+    document.getElementById('outputContent').textContent = savedContent;
+    }
+    }
+    
+   
+  
+ 
+ 
+ 
+ function sharePage() {
+ // Get the current page URL
+ var currentPageUrl = window.location.href;
+ 
+ // Check if the browser supports the Web Share API
+ if (navigator.share) {
+ navigator.share({
+ title: document.title,
+ url: currentPageUrl
+ })
+ .then(() => console.log('Shared successfully'))
+ .catch((error) => console.error('Error sharing:', error));
+ } else {
+ // Fallback for browsers that do not support the Web Share API
+ alert('Copy the URL below to share:\n\n' + currentPageUrl);
+ }
+ }
+ 
+ // Set the target date and time
+ var targetDate = new Date('2024-01-01T00:00:00').getTime();
+ 
+ function updateTimer() {
+ var currentDate = new Date().getTime();
+ var timeDifference = targetDate - currentDate;
+ 
+ if (timeDifference > 0) {
+ var days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+ var hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+ var minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+ var seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+ 
+ // Add leading zero if needed
+ hours = hours < 10 ? "0" + hours : hours;
+ minutes = minutes < 10 ? "0" + minutes : minutes;
+ seconds = seconds < 10 ? "0" + seconds : seconds;
+ 
+ document.getElementById("timer").innerText = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+ } else {
+ clearInterval(timerInterval);
+ document.getElementById("timer").innerText = "Time's up!";
+ }
+ }
+ 
+ // Call updateTimer function every second
+ var timerInterval = setInterval(updateTimer, 1000);
+ 
+    
+    
+    </script>
+</body>
+</html>
